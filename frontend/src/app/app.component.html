@@ -1,0 +1,73 @@
+<img src="assets/logo.png" class="logo" />
+<div class="main-area">
+  <span class="glass title">
+    {{ getMessageBasedOnStage() }}
+  </span>
+  <div *ngIf="loading" class="loader glass"></div>
+  <div class="glass content" *ngIf="stage == 'upload'">
+    <div
+      *ngIf="stage == 'upload'"
+      style="display: flex; flex-direction: column; gap: 10px"
+    >
+      <label for="image-file" class="file-upload"> SELECT A FILE </label>
+      <input
+        type="file"
+        accept="image/png"
+        id="image-file"
+        (change)="fileSelected($event)"
+        style="display: none"
+      />
+      <button *ngIf="!!file" (click)="uploadFile()">UPLOAD</button>
+    </div>
+  </div>
+  <div
+    *ngIf="stage == 'action'"
+    style="display: flex; width: 100%; justify-content: center; gap: 10px"
+  >
+    <button (click)="moveToDecode()">DECODE</button>
+    <button (click)="moveToEncode()">ENCODE</button>
+  </div>
+  <div
+    *ngIf="stage == 'decode'"
+    style="display: flex; width: 100%; justify-content: center; gap: 10px"
+  >
+    <button (click)="decodeStageLSB()">DECODE LSB</button>
+    <button (click)="decodeStagePVD()">DECODE PVD</button>
+    <button (click)="decodeStageDCT()">DECODE DCT</button>
+  </div>
+  <div
+    *ngIf="stage == 'encode'"
+    style="display: flex; width: 100%; justify-content: center; gap: 10px;flex-direction: column;"
+  >
+    <input type="text" id="msg" placeholder="the message" class="the-msg" />
+    <div style="display: flex;justify-content: space-between;">
+      <button (click)="encodeFile()">ENCODE LSB</button>
+      <button (click)="encodeFilePVD()">ENCODE PVD</button>
+      <button (click)="encodeFileDCT()">ENCODE DCT</button>
+    </div>
+  </div>
+  <div
+    *ngIf="stage == 'result_decode'"
+    style="display: flex; width: 50vw; justify-content: flex-start; gap: 10px;width: fit-content; padding: 10px;border-radius: 16px;"
+    class="glass"
+  >
+    <span style="color: white">{{ msg }}</span>
+  </div>
+  <div class="glass image-placeholder" *ngIf="imgSrc">
+    <img class="image-placeholder" [src]="imgSrc" *ngIf="!!imgSrc" />
+    <div>
+      <button *ngIf="stage == 'result_encode'" (click)="download()" style="margin-right: 30px;">
+      Download Image
+    </button>
+    <button *ngIf="stage == 'result_encode' || stage == 'result_decode'" (click)="reset()">
+      Back to Home
+    </button>
+    </div>
+    
+  </div>
+</div>
+
+<img
+  style="width: 100vw; height: 100vh; object-fit: cover"
+  src="assets/bg.png"
+/>
